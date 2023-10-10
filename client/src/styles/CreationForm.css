@@ -1,0 +1,19 @@
+:root {
+    --creation-bg-color: rgb(241, 241, 241);
+}
+
+.creation-form {
+    width: 30% !important;
+    background-color: var(--creation-bg-color);
+    padding: 70px 50px;
+    margin-top: 20vh;
+    border-radius: 30px;
+}
+
+.creation-error-message {
+    width: 40%;
+}
+
+.visible-help-label {
+    position: fixed !important;
+}
