@@ -9,3 +9,9 @@
 /server/var/
 /server/vendor/
 ###< symfony/framework-bundle ###
+
+###> client
+/client/node_modules
+###> client
+
+/mysql
