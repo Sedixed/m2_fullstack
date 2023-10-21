@@ -19,17 +19,14 @@ const CreationForm = () => {
         e.preventDefault();
         // Call API
         const create = async () => {
-            const { data } = await server.post(
-                routes.DELIVERER_CREATE,
-                null,
+            const data = await server.post(
+                routes.DELIVERERS,
                 {
-                    params: {
-                        name: name,
-                        availability: availableRef.current.checked
-                    },
+                    name: name,
+                    available: availableRef.current.checked
                 }
             );
-
+            
             if (data.status === 201) {
                 navigate(paths.LIST_PATH, { 
                     state: {
