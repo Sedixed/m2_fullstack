@@ -24,7 +24,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
         new Get(),
         new GetCollection(
             paginationType: 'page',
-            paginationItemsPerPage: 10,
+            paginationClientItemsPerPage: true,
             paginationClientEnabled: true
         ),
         new Post(),
