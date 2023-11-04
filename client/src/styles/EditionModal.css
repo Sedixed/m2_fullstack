@@ -1,0 +1,19 @@
+.edition-modal i.close.icon {
+    width: auto;
+    height: auto;
+    margin: 45px 45px;
+    padding: 7px 11px;
+    border-radius: 50%;
+    color: #555657;
+    transition: all ease 0.2s;
+}
+
+.edition-modal i.close.icon:hover {
+    background-color: rgb(210, 209, 209);
+}
+
+.edition-modal {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
