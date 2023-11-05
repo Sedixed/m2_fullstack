@@ -1,26 +1,28 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation } from 'react-router-dom';
-import ErrorMessage from "../ErrorMessage";
-import SuccessMessage from "../SuccessMessage";
 import server from "../../apis/server";
 import routes from "../../constants/routes";
 import DelivererTable from "./DelivererTable";
 import Loader from "../Loader.jsx";
 import PaginationTabs from "../PaginationTabs";
 import EditionModal from "./EditionModal";
+import SuccessMessage from '../SuccessMessage';
+import { useLocation, useNavigate } from "react-router-dom";
+import paths from "../../constants/paths";
 
 const HomePage = () => {
     const [deliverers, setDeliverers] = useState(null);
     const [hydraView, setHydraView] = useState(null);
     const [delivererToEdit, setDelivererToEdit] = useState(null);
+    const [snackMessage, setSnackMessage] = useState(null);
     const [fetchingParams, setFetchingParams] = useState({
         pagination: true,
         page: 1,
         itemsPerPage: 8
     });
-    const location = useLocation();
     const modalRef = useRef();
-
+    const location = useLocation();
+    const navigate = useNavigate();
+    
     const fetch = async () => {
         const { data } = await server.get(
             routes.DELIVERERS, 
@@ -29,19 +31,24 @@ const HomePage = () => {
             });  
         setDeliverers(data['hydra:member']);
         setHydraView(data['hydra:view']);
-        console.log(location.state);
     }
-    
+
     const deleteDeliverer = async (delivererId) => {
         try {
             const data = await server.delete(
                 routes.DELIVERERS + '/' + delivererId
             );
             if (data.status == 204) {
-                location.state = {
-                    deleted: true
-                };
-                fetch();
+                setSnackMessage('Livreur supprimé avec succès !');
+                if (deliverers.length === 1) {
+                    setFetchingParams({
+                        pagination: true,
+                        page: fetchingParams.page > 1 ? fetchingParams.page - 1 : fetchingParams.page,
+                        itemsPerPage: fetchingParams.itemsPerPage
+                    });
+                } else {
+                    fetch();
+                }
             }
         } catch (exception) {
             console.log(exception);
@@ -51,6 +58,25 @@ const HomePage = () => {
     const closeModal = () => {
         setDelivererToEdit(null);
     }
+
+    useEffect(() => {
+        // Nothing to do
+        if (location.state === null) {
+            return;
+        }
+        // Creation case
+        if (location.state['created'] !== undefined) {
+            navigate(paths.LIST_PATH, { replace: true });
+            setSnackMessage('Livreur créé avec succès !');
+            return;
+        }
+        // Modification case
+        if (location.state['modified'] !== undefined) {
+            navigate(paths.LIST_PATH, { replace: true });
+            setSnackMessage('Livreur modifié avec succès !');
+            return;
+        }
+    }, [delivererToEdit]);
 
     useEffect(() => {
         fetch();
@@ -67,11 +93,15 @@ const HomePage = () => {
                     deliverer={delivererToEdit}
                     closeModal={closeModal}
                     refetchCallback={fetch}
+                    location={location}
                 /> :
                 null
             }
-            <ErrorMessage />
-            <SuccessMessage />
+            {
+                snackMessage ?
+                <SuccessMessage message={snackMessage} callback={() => setSnackMessage(null)} /> :
+                null
+            }
             <DelivererTable 
                 deliverers={deliverers} 
                 editionCallback={setDelivererToEdit}

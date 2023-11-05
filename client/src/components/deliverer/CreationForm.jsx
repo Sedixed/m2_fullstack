@@ -28,7 +28,7 @@ const CreationForm = () => {
             );
             
             if (data.status === 201) {
-                navigate(paths.LIST_PATH, { 
+                navigate(paths.LIST_PATH, {
                     state: {
                         created: true
                     }
@@ -43,7 +43,11 @@ const CreationForm = () => {
 
     return (
         <React.Fragment>
-            <ErrorMessage additionalClassName="creation-error-message" errorMessage={error} callback={() => setError('')}/>
+            <ErrorMessage 
+                additionalClassName="creation-error-message" 
+                errorMessage={error} 
+                callback={() => setError('')}
+            />
             <div className="ui container creation-form">
                 <h1 className="ui header centered">Nouveau livreur</h1>
                 <form onSubmit={onFormSubmit} className="ui form">

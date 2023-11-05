@@ -1,23 +1,21 @@
 import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import routes from "../../constants/routes";
 import server from "../../apis/server";
-import paths from "../../constants/paths";
-
+import ErrorMessage from "../ErrorMessage";
 import '../../styles/EditionModal.css';
 
 const EditionModal = ({ 
     deliverer, 
     modalRef,
     closeModal,
-    refetchCallback
+    refetchCallback,
+    location
 }) => {
     const [name, setName] = useState(deliverer.name);
     const [error, setError] = useState('');
     const [visibleHelp, setVisibleHelp] = useState(false);
     const availableRef = useRef();
-    const navigate = useNavigate();
 
     const save = async () => {
         const data = await server.put(
@@ -27,20 +25,16 @@ const EditionModal = ({
                 available: availableRef.current.checked
             }
         );
-
-        console.log(data);
         
         if (data.status === 200) {
-            navigate(paths.LIST_PATH, { 
-                state: {
-                    modified: true
-                }
-            });
+            location.state = {
+                modified: true
+            }
+            closeModal();
+            refetchCallback();
         } else {
             setError(data.message);
         }
-        closeModal();
-        refetchCallback();
     }
 
     return (
@@ -54,6 +48,11 @@ const EditionModal = ({
                     {deliverer.name}
                 </div>
                 <div className="content">
+                    <ErrorMessage 
+                        additionalClassName="creation-error-message" 
+                        errorMessage={error} 
+                        callback={() => setError('')}
+                    />
                     <form onSubmit={null} className="ui form">
                         <div className="field">
                             <label>Nom complet</label>
