@@ -8,12 +8,14 @@ import EditionModal from "./EditionModal";
 import SuccessMessage from '../SuccessMessage';
 import { useLocation, useNavigate } from "react-router-dom";
 import paths from "../../constants/paths";
+import FetchOptionsTabs from "../FetchOptionsTabs";
 
 const HomePage = () => {
     const [deliverers, setDeliverers] = useState(null);
     const [hydraView, setHydraView] = useState(null);
     const [delivererToEdit, setDelivererToEdit] = useState(null);
     const [snackMessage, setSnackMessage] = useState(null);
+    const [sortOptions, setSortOptions] = useState(null);
     const [fetchingParams, setFetchingParams] = useState({
         pagination: true,
         page: 1,
@@ -24,10 +26,15 @@ const HomePage = () => {
     const navigate = useNavigate();
     
     const fetch = async () => {
+        let params =  {...fetchingParams};
+        if (sortOptions != null) {
+            params[`order[${sortOptions.property}]`]= sortOptions.order
+        }
+        console.log(params);
         const { data } = await server.get(
             routes.DELIVERERS, 
             {
-                params: fetchingParams
+                params: params
             });  
         setDeliverers(data['hydra:member']);
         setHydraView(data['hydra:view']);
@@ -80,7 +87,7 @@ const HomePage = () => {
 
     useEffect(() => {
         fetch();
-    }, [fetchingParams]);
+    }, [fetchingParams, sortOptions]);
 
     return (
         !deliverers ?
@@ -102,6 +109,7 @@ const HomePage = () => {
                 <SuccessMessage message={snackMessage} callback={() => setSnackMessage(null)} /> :
                 null
             }
+            <FetchOptionsTabs setSortOptionsCallback={setSortOptions}/>
             <DelivererTable 
                 deliverers={deliverers} 
                 editionCallback={setDelivererToEdit}

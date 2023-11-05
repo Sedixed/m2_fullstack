@@ -1,0 +1,8 @@
+.fetch-options-tabs {
+    display: flex;
+    align-items: baseline;
+}
+
+.fetch-options-tabs .darken {
+    filter: brightness(0.90);
+}

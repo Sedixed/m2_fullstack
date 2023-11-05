@@ -37,8 +37,6 @@ class Deliverer
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    // #[ApiProperty(readable:false)]
-    #[ApiFilter(OrderFilter::class)]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -51,6 +49,7 @@ class Deliverer
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[ApiFilter(DateFilter::class)]
+    #[ApiFilter(OrderFilter::class)]
     #[ApiProperty(writable: false)]
     private ?\DateTimeInterface $creationDate = null;
 
