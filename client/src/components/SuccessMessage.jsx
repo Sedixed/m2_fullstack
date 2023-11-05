@@ -19,8 +19,8 @@ const SuccessMessage = ({
             });
             setTimeout(() => {
                 callback();
-            }, 2000);
-        }, 5000);
+            }, 2000);   
+        }, 4000);
     });
     return (
         <div 
