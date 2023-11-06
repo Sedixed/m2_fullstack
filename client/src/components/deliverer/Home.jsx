@@ -16,6 +16,7 @@ const HomePage = () => {
     const [delivererToEdit, setDelivererToEdit] = useState(null);
     const [snackMessage, setSnackMessage] = useState(null);
     const [sortOptions, setSortOptions] = useState(null);
+    const [filterOptions, setFilterOptions] = useState(null);
     const [fetchingParams, setFetchingParams] = useState({
         pagination: true,
         page: 1,
@@ -27,10 +28,21 @@ const HomePage = () => {
     
     const fetch = async () => {
         let params =  {...fetchingParams};
-        if (sortOptions != null) {
-            params[`order[${sortOptions.property}]`]= sortOptions.order
+        if (sortOptions !== null) {
+            params[`order[${sortOptions.property}]`] = sortOptions.order
         }
-        console.log(params);
+        if (filterOptions !== null) {
+            if (filterOptions['available'] !== undefined) {
+                params['available'] = filterOptions['available']
+            }
+            if (filterOptions['beforeDate'] !== undefined) {
+                params['creationDate[before]'] = filterOptions['beforeDate']
+            }
+            if (filterOptions['afterDate'] !== undefined) {
+                params['creationDate[after]'] = filterOptions['afterDate']
+            }
+        }
+        
         const { data } = await server.get(
             routes.DELIVERERS, 
             {
@@ -87,7 +99,7 @@ const HomePage = () => {
 
     useEffect(() => {
         fetch();
-    }, [fetchingParams, sortOptions]);
+    }, [fetchingParams, sortOptions, filterOptions]);
 
     return (
         !deliverers ?
@@ -109,7 +121,10 @@ const HomePage = () => {
                 <SuccessMessage message={snackMessage} callback={() => setSnackMessage(null)} /> :
                 null
             }
-            <FetchOptionsTabs setSortOptionsCallback={setSortOptions}/>
+            <FetchOptionsTabs 
+                setSortOptionsCallback={setSortOptions} 
+                setFilterOptionsCallback={setFilterOptions}
+            />
             <DelivererTable 
                 deliverers={deliverers} 
                 editionCallback={setDelivererToEdit}

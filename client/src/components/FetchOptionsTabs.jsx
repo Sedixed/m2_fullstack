@@ -3,9 +3,15 @@ import React, { useEffect, useState } from "react";
 import '../styles/FetchOptionsTabs.css';
 
 const FetchOptionsTabs = ({
-    setSortOptionsCallback
+    setSortOptionsCallback,
+    setFilterOptionsCallback
 }) => {
     const [sortProperty, setSortProperty] = useState(null);
+    const [availableFiltering, setAvailableFiltering] = useState(false);
+    const [creationDateFiltering, setCreationDateFiltering] = useState(false);
+    const [available, setAvailable] = useState(true);
+    const [beforeDate, setBeforeDate] = useState('');
+    const [afterDate, setAfterDate] = useState('');
     const [sortOrder, setSortOrder] = useState('asc');
 
     useEffect(() => {
@@ -16,9 +22,73 @@ const FetchOptionsTabs = ({
                 order: sortOrder
             } :
             null
+        );
+
+        if (availableFiltering || creationDateFiltering) {
+            let filterParams = {};
+            if (availableFiltering) {
+                filterParams['available'] = available
+            }
+            if (creationDateFiltering) {
+                if (beforeDate !== '') {
+                    filterParams['beforeDate'] = beforeDate
+                }
+                if (afterDate !== '') {
+                    filterParams['afterDate'] = afterDate
+                }
+            }
+            setFilterOptionsCallback(filterParams);
+        } else {
+            setFilterOptionsCallback(null);
+        }
+    }, [
+        sortOrder, 
+        sortProperty, 
+        availableFiltering, 
+        creationDateFiltering, 
+        available, 
+        beforeDate, 
+        afterDate
+    ]);
+
+    const renderedAvailableFilterButtons = () => {
+        if (!availableFiltering) {
+            return null;
+        }
+
+        return (
+            <div 
+                className="ui medium icon button"
+                onClick={() => setAvailable(!available)}
+            >
+                <i className={`icon ${available ? 'checkmark green' : 'close red'}`}></i>
+            </div>
+        );
+           
+    }
+
+    const renderedDateFilterButtons = () => {
+        if (!creationDateFiltering) {
+            return null;
+        }
+
+        return (
+            <div>
+                <div class="ui labeled input">
+                    <div class="ui label">
+                        Avant le
+                    </div>
+                    <input type="date" value={beforeDate} onChange={e => setBeforeDate(e.target.value)}/>
+                </div>
+                <div class="ui labeled input">
+                    <div class="ui label">
+                        Après le
+                    </div>
+                    <input type="date" value={afterDate} onChange={e => setAfterDate(e.target.value)}/>
+                </div>
+            </div>
         )
-        
-    }, [sortOrder, sortProperty]);
+    }
 
     return (
         <div className="fetch-options-tabs">
@@ -44,11 +114,36 @@ const FetchOptionsTabs = ({
                 <i className={`angle ${sortOrder === 'asc' ? 'up' : 'down'} icon`}></i>
             </button>
 
+            <p>Filtrer par</p>
+            <div className="filter-group">
+                <div className="ui buttons">
+                    <button 
+                        className={`ui medium button ${availableFiltering ? 'darken' : ''}`}
+                        onClick={() => {
+                            setAvailableFiltering(!availableFiltering);
+                        }}
+                    >
+                        Disponibilité
+                    </button>
+                    <button 
+                        className={`ui medium button ${creationDateFiltering ? 'darken' : ''}`}
+                        onClick={() => setCreationDateFiltering(!creationDateFiltering)}
+                    >
+                        Date de création
+                    </button>
+                </div>
+                {renderedAvailableFilterButtons()}
+                {renderedDateFilterButtons()}
+            </div>
+
             <button 
                 className="ui medium black icon button"
                 onClick={() => {
                     setSortProperty(null);
                     setSortOrder('asc');
+                    setAvailableFiltering(false);
+                    setCreationDateFiltering(false);
+                    setAvailable(true);
                 }}
             >
                 Réinitialiser

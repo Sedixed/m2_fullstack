@@ -10,6 +10,9 @@ const SuccessMessage = ({
     const messageRef = useRef();
     useEffect(() => {
         setTimeout(() => {
+            if (messageRef.current === null) {
+                return;
+            }
             messageRef.current.animate([
                 { opacity: 1.0 },
                 { opacity: 0 },

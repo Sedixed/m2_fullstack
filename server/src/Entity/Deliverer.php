@@ -19,6 +19,7 @@ use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 
 #[ORM\Entity(repositoryClass: DelivererRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[ApiResource(
     operations: [
         new Get(),
@@ -47,13 +48,21 @@ class Deliverer
     #[ApiFilter(BooleanFilter::class)]
     private ?bool $available = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[ApiFilter(DateFilter::class)]
     #[ApiFilter(OrderFilter::class)]
     #[ApiProperty(writable: false)]
     private ?\DateTimeInterface $creationDate = null;
 
     public function __construct()
+    {   
+        if ($this->creationDate == null) {
+            $this->creationDate = new \DateTimeImmutable();
+        }
+    }
+
+    #[ORM\PrePersist]
+    public function prePersist()
     {
         $this->creationDate = new DateTime();
     }

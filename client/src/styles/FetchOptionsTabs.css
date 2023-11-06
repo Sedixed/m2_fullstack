@@ -6,3 +6,8 @@
 .fetch-options-tabs .darken {
     filter: brightness(0.90);
 }
+
+.fetch-options-tabs .filter-group {
+    display: flex;
+    flex-direction: column;
+}
