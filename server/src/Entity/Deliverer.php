@@ -57,10 +57,7 @@ class Deliverer
     #[ORM\PrePersist]
     public function prePersist()
     {   
-        if ($this->creationDate == null) {
-            $this->creationDate = new DateTime();
-        }
-        
+        $this->creationDate = new DateTime();
     }
 
     public function getId(): ?int
