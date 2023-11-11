@@ -8,7 +8,7 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Patch;
 use App\Repository\DelivererRepository;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
@@ -29,7 +29,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
             paginationClientEnabled: true
         ),
         new Post(),
-        new Put(),
+        new Patch(),
         new Delete()
     ]
 )]
@@ -48,23 +48,19 @@ class Deliverer
     #[ApiFilter(BooleanFilter::class)]
     private ?bool $available = null;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[ApiFilter(DateFilter::class)]
     #[ApiFilter(OrderFilter::class)]
     #[ApiProperty(writable: false)]
     private ?\DateTimeInterface $creationDate = null;
-
-    public function __construct()
-    {   
-        if ($this->creationDate == null) {
-            $this->creationDate = new \DateTimeImmutable();
-        }
-    }
-
+    
     #[ORM\PrePersist]
     public function prePersist()
-    {
-        $this->creationDate = new DateTime();
+    {   
+        if ($this->creationDate == null) {
+            $this->creationDate = new DateTime();
+        }
+        
     }
 
     public function getId(): ?int

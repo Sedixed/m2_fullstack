@@ -18,11 +18,16 @@ const EditionModal = ({
     const availableRef = useRef();
 
     const save = async () => {
-        const data = await server.put(
+        const data = await server.patch(
             routes.DELIVERERS + '/' + deliverer.id,
             {
                 name: name,
                 available: availableRef.current.checked
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/merge-patch+json'
+                }
             }
         );
         

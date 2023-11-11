@@ -57,7 +57,7 @@ const HomePage = () => {
             const data = await server.delete(
                 routes.DELIVERERS + '/' + delivererId
             );
-            if (data.status == 204) {
+            if (data.status === 204) {
                 setSnackMessage('Livreur supprimé avec succès !');
                 if (deliverers.length === 1) {
                     setFetchingParams({
