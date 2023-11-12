@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\DelivererRepository;
+use App\Repository\ShiftRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: DelivererRepository::class)]
+#[ORM\Entity(repositoryClass: ShiftRepository::class)]
 #[ApiResource]
-class Deliverer
+class Shift
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,10 +19,10 @@ class Deliverer
     private ?string $name = null;
 
     #[ORM\Column]
-    private ?bool $available = null;
+    private ?\DateTimeImmutable $startingDate = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $creationDate = null;
+    private ?\DateTimeImmutable $endingDate = null;
 
     public function getId(): ?int
     {
@@ -41,26 +41,26 @@ class Deliverer
         return $this;
     }
 
-    public function isAvailable(): ?bool
+    public function getStartingDate(): ?\DateTimeImmutable
     {
-        return $this->available;
+        return $this->startingDate;
     }
 
-    public function setAvailable(bool $available): static
+    public function setStartingDate(\DateTimeImmutable $startingDate): static
     {
-        $this->available = $available;
+        $this->startingDate = $startingDate;
 
         return $this;
     }
 
-    public function getCreationDate(): ?\DateTimeImmutable
+    public function getEndingDate(): ?\DateTimeImmutable
     {
-        return $this->creationDate;
+        return $this->endingDate;
     }
 
-    public function setCreationDate(\DateTimeImmutable $creationDate): static
+    public function setEndingDate(\DateTimeImmutable $endingDate): static
     {
-        $this->creationDate = $creationDate;
+        $this->endingDate = $endingDate;
 
         return $this;
     }

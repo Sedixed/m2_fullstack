@@ -2,57 +2,27 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Patch;
 use App\Repository\DeliveryRepository;
-use DateTime;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiFilter;
-use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
-use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
-use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DeliveryRepository::class)]
-#[ORM\HasLifecycleCallbacks]
-#[ApiResource(
-    operations: [
-        new Get(),
-        new GetCollection(
-            paginationType: 'page',
-            paginationClientItemsPerPage: true,
-            paginationClientEnabled: true
-        ),
-        new Post(),
-        new Patch(),
-        new Delete()
-    ]
-)]
+#[ApiResource]
 class Delivery
 {
-    #[ORM\Id, ORM\Column, ORM\GeneratedValue]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING)]
-    #[Assert\Length(min: 3, max: 32)]
-    #[ApiFilter(OrderFilter::class)]
+    #[ORM\Column(length: 32, nullable: true)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::STRING)]
-    #[Assert\Length(max: 255), Assert\NotNull]
-    #[ApiFilter(OrderFilter::class)]
-    private ?string $pick_up_address = null;
+    #[ORM\Column(length: 255)]
+    private ?string $pickUpAdress = null;
 
-    #[ORM\Column(type: Types::STRING)]
-    #[Assert\Length(max: 255), Assert\NotNull]
-    #[ApiFilter(OrderFilter::class)]
-    private ?string $drop_off_address = null;
+    #[ORM\Column(length: 255)]
+    private ?string $dropOffAdress = null;
 
     public function getId(): ?int
     {
@@ -64,33 +34,33 @@ class Delivery
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(?string $name): static
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function isPickUpAddress(): ?bool
+    public function getPickUpAdress(): ?string
     {
-        return $this->pick_up_address;
+        return $this->pickUpAdress;
     }
 
-    public function setPickUpAddress(bool $pick_up_address): static
+    public function setPickUpAdress(string $pickUpAdress): static
     {
-        $this->pick_up_address = $pick_up_address;
+        $this->pickUpAdress = $pickUpAdress;
 
         return $this;
     }
 
-    public function getDropOffAddress(): ?string
+    public function getDropOffAdress(): ?string
     {
-        return $this->drop_off_address;
+        return $this->dropOffAdress;
     }
 
-    public function setDropOffAddress(string $drop_off_address): static
+    public function setDropOffAdress(string $dropOffAdress): static
     {
-        $this->drop_off_address = $drop_off_address;
+        $this->dropOffAdress = $dropOffAdress;
 
         return $this;
     }
