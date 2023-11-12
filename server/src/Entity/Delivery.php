@@ -9,7 +9,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
-use App\Repository\DelivererRepository;
+use App\Repository\DeliveryRepository;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,7 +19,7 @@ use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: DelivererRepository::class)]
+#[ORM\Entity(repositoryClass: DeliveryRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
     operations: [
@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Delete()
     ]
 )]
-class Deliverer
+class Delivery
 {
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
     private ?int $id = null;
@@ -42,23 +42,17 @@ class Deliverer
     #[ORM\Column(type: Types::STRING)]
     #[Assert\Length(min: 3, max: 32)]
     #[ApiFilter(OrderFilter::class)]
-    private ?string $name = "";
+    private ?string $name = null;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
-    #[Assert\NotNull]
-    #[ApiFilter(BooleanFilter::class)]
-    private ?bool $available = null;
+    #[ORM\Column(type: Types::STRING)]
+    #[Assert\Length(max: 255), Assert\NotNull]
+    #[ApiFilter(OrderFilter::class)]
+    private ?string $pick_up_address = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\NotNull]
-    #[ApiFilter(DateFilter::class), ApiFilter(OrderFilter::class)]
-    #[ApiProperty(writable: false)]
-    private ?\DateTimeInterface $creationDate = null;
-
-    public function __construct()
-    {   
-        $this->creationDate = new DateTime();
-    }
+    #[ORM\Column(type: Types::STRING)]
+    #[Assert\Length(max: 255), Assert\NotNull]
+    #[ApiFilter(OrderFilter::class)]
+    private ?string $drop_off_address = null;
 
     public function getId(): ?int
     {
@@ -77,26 +71,26 @@ class Deliverer
         return $this;
     }
 
-    public function isAvailable(): ?bool
+    public function isPickUpAddress(): ?bool
     {
-        return $this->available;
+        return $this->pick_up_address;
     }
 
-    public function setAvailable(bool $available): static
+    public function setPickUpAddress(bool $pick_up_address): static
     {
-        $this->available = $available;
+        $this->pick_up_address = $pick_up_address;
 
         return $this;
     }
 
-    public function getCreationDate(): ?\DateTimeInterface
+    public function getDropOffAddress(): ?string
     {
-        return $this->creationDate;
+        return $this->drop_off_address;
     }
 
-    public function setCreationDate(\DateTimeInterface $creationDate): static
+    public function setDropOffAddress(string $drop_off_address): static
     {
-        $this->creationDate = $creationDate;
+        $this->drop_off_address = $drop_off_address;
 
         return $this;
     }

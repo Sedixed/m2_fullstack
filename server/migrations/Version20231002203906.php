@@ -14,18 +14,22 @@ final class Version20231002203906 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Coucou Leo et Jordan';
     }
 
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE deliverer (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, available TINYINT(1) NOT NULL, creation_date DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE deliverer (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(32) NOT NULL, available TINYINT(1) NOT NULL, creation_date DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE delivery (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(32), pick_up_address VARCHAR(255) NOT NULL, drop_off_address VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE shift (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(32), starting_date DATETIME NOT NUL, ending_date DATETIME NOT NUL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE deliverer');
+        $this->addSql('DROP TABLE delivery');
+        $this->addSql('DROP TABLE shift');
     }
 }
