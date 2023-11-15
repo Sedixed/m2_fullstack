@@ -12,6 +12,7 @@
 
 ###> client
 /client/node_modules
+/client/package-lock.json
 ###> client
 
 /mysql
