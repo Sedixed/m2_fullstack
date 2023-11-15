@@ -54,8 +54,7 @@ class Deliverer
     #[ApiProperty(writable: false)]
     private ?\DateTimeInterface $creationDate = null;
     
-    #[ORM\PrePersist]
-    public function prePersist()
+    public function __construct()
     {   
         $this->creationDate = new DateTime();
     }
