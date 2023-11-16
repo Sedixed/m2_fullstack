@@ -58,7 +58,7 @@ const FetchOptionsTabs = ({
 
         return (
             <div 
-                className="ui medium icon button"
+                className="ui medium icon button available-opts"
                 onClick={() => setAvailable(!available)}
             >
                 <i className={`icon ${available ? 'checkmark green' : 'close red'}`}></i>
@@ -73,15 +73,15 @@ const FetchOptionsTabs = ({
         }
 
         return (
-            <div>
-                <div class="ui labeled input">
-                    <div class="ui label">
+            <div className="date-opts">
+                <div className="ui labeled input">
+                    <div className="ui label">
                         Avant le
                     </div>
                     <input type="date" value={beforeDate} onChange={e => setBeforeDate(e.target.value)}/>
                 </div>
-                <div class="ui labeled input">
-                    <div class="ui label">
+                <div className="ui labeled input">
+                    <div className="ui label">
                         Après le
                     </div>
                     <input type="date" value={afterDate} onChange={e => setAfterDate(e.target.value)}/>
@@ -92,7 +92,7 @@ const FetchOptionsTabs = ({
 
     return (
         <div className="fetch-options-tabs">
-            <p>Trier par</p>
+            <p className="label">Trier par</p>
             <div className="ui buttons">
                 <button 
                     className={`ui medium button ${sortProperty === 'name' ? 'darken' : ''}`}
@@ -108,13 +108,13 @@ const FetchOptionsTabs = ({
                 </button>
             </div>
             <button 
-                className="ui medium icon button"
+                className="ui medium icon button ml-20 mr-50"
                 onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
             >
                 <i className={`angle ${sortOrder === 'asc' ? 'up' : 'down'} icon`}></i>
             </button>
 
-            <p>Filtrer par</p>
+            <p className="label">Filtrer par</p>
             <div className="filter-group">
                 <div className="ui buttons">
                     <button 
@@ -132,12 +132,12 @@ const FetchOptionsTabs = ({
                         Date de création
                     </button>
                 </div>
-                {renderedAvailableFilterButtons()}
                 {renderedDateFilterButtons()}
+                {renderedAvailableFilterButtons()}
             </div>
 
             <button 
-                className="ui medium black icon button"
+                className="ui medium black icon button ml-20"
                 onClick={() => {
                     setSortProperty(null);
                     setSortOrder('asc');
