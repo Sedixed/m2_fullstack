@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use App\Repository\DelivererRepository;
+use App\Filter\ShiftsCountFilter;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,6 +20,8 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+
+use Symfony\Component\Serializer\Annotation\Groups as SerialGroups;
 
 #[ORM\Entity(repositoryClass: DelivererRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -33,30 +36,53 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
         new Post(),
         new Patch(),
         new Delete()
-    ]
+    ],
+    normalizationContext: ['groups' => ['deliverer:read']],
+    denormalizationContext: ['groups' => ['deliverer:write']],
 )]
+#[ApiFilter(ShiftsCountFilter::class)]
 class Deliverer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[SerialGroups([
+      'deliverer:read',
+      'deliverer:write'
+    ])]
     private ?int $id = null;
 
     #[ORM\Column(length: 32)]
     #[ApiFilter(OrderFilter::class)]
+    #[SerialGroups([
+      'deliverer:read',
+      'deliverer:write'
+    ])]
     private ?string $name = null;
 
     #[ORM\Column]
     #[ApiFilter(BooleanFilter::class)]
+    #[SerialGroups([
+      'deliverer:read',
+      'deliverer:write'
+    ])]
     private ?bool $available = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[ApiFilter(DateFilter::class)]
     #[ApiFilter(OrderFilter::class)]
     #[ApiProperty(writable: false)]
+    #[SerialGroups([
+      'deliverer:read',
+      'deliverer:write'
+    ])]
     private ?\DateTimeInterface $creationDate = null;
     
     #[ORM\OneToMany(mappedBy: 'deliverer', targetEntity: Shift::class)]
+    #[SerialGroups([
+      'deliverer:read',
+      'deliverer:write'
+    ])]
     private Collection $shifts;
     
     public function __construct()

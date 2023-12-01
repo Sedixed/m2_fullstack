@@ -106,6 +106,12 @@ const FetchOptionsTabs = ({
                 >
                     Date de création
                 </button>
+                <button 
+                    className={`ui medium button ${sortProperty === 'creationDate' ? 'darken' : ''}`}
+                    onClick={() => setSortProperty('creationDate')}
+                >
+                    Nombre de tournées
+                </button>
             </div>
             <button 
                 className="ui medium icon button ml-20 mr-50"

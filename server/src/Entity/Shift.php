@@ -21,6 +21,8 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 
+use Symfony\Component\Serializer\Annotation\Groups as SerialGroups;
+
 #[ORM\Entity(repositoryClass: ShiftRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
@@ -34,25 +36,52 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
         new Post(),
         new Patch(),
         new Delete()
-    ]
+    ],
+    normalizationContext: ['groups' => ['shift:read']],
+    denormalizationContext: ['groups' => ['shift:write']],
 )]
 class Shift
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[SerialGroups([
+      'shift:read',
+      'shift:write',
+      'deliverer:read'
+    ])]
     private ?int $id = null;
 
     #[ORM\Column(length: 32)]
+    #[SerialGroups([
+      'shift:read',
+      'shift:write',
+      'deliverer:read'
+    ])]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[SerialGroups([
+      'shift:read',
+      'shift:write',
+      'deliverer:read'
+    ])]
     private ?\DateTimeImmutable $startingDate = null;
 
     #[ORM\Column]
+    #[SerialGroups([
+      'shift:read',
+      'shift:write',
+      'deliverer:read'
+    ])]
     private ?\DateTimeImmutable $endingDate = null;
 
     #[ORM\OneToMany(mappedBy: 'shift', targetEntity: Delivery::class)]
+    #[SerialGroups([
+      'shift:read',
+      'shift:write',
+      'deliverer:read'
+    ])]
     private Collection $deliveries;
 
     #[ORM\ManyToOne(inversedBy: 'shifts')]

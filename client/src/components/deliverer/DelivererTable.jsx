@@ -8,6 +8,7 @@ const DelivererTable = ({
     deletionCallback
 }) => {
     const renderedDeliverers = deliverers.map(d => {
+        console.log(d)
         return (
             <tr key={d.id}>
                 <td className="center aligned">{d.name}</td>
@@ -16,6 +17,10 @@ const DelivererTable = ({
                 </td>
                 <td className="center aligned">
                     {new Date(d.creationDate).toLocaleDateString()}
+                </td>
+                <td className="center aligned">{d.shifts.length}</td>
+                <td className="center aligned">
+                    {d.shifts.reduce((acc, shift) => acc + shift.deliveries.length, 0)}
                 </td>
                 <td className="center aligned actions">
                     <i 
@@ -38,6 +43,8 @@ const DelivererTable = ({
                         <th className="center aligned">Nom</th>
                         <th className="center aligned">Disponible</th>
                         <th className="center aligned">Date de création</th>
+                        <th className="center aligned">Nombre de tournées</th>
+                        <th className="center aligned">Nombre de livraisons</th>
                         <th className="center aligned">Actions</th>
                     </tr>
                 </thead>
