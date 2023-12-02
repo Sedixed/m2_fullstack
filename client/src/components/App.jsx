@@ -3,8 +3,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Header from "./Header";
 import paths from "../constants/paths";
-import CreationForm from "./deliverer/CreationForm";
-import HomePage from "./deliverer/Home";
+import DelivererCreationForm from "./deliverer/DelivererCreationForm";
+import DeliverersList from "./deliverer/DeliverersList";
+import ShiftCreationForm from "./shift/ShiftCreationForm";
+import DeliveryCreationForm from "./delivery/DeliveryCreationForm";
+import DeliveriesList from "./delivery/DeliveriesList";
+import ShiftsList from "./shift/ShiftsList";
 
 const App = () => {
     return (
@@ -12,8 +16,14 @@ const App = () => {
             <BrowserRouter>
                 <Header />
                 <Routes>
-                    <Route path={paths.CREATE_PATH} element={<CreationForm />} />
-                    <Route path={paths.LIST_PATH} element={<HomePage />} />
+                    <Route path={paths.DELIVERERS_CREATE_PATH} element={<DelivererCreationForm />} />
+                    <Route path={paths.DELIVERERS_LIST_PATH} element={<DeliverersList />} />
+
+                    <Route path={paths.SHIFTS_CREATE_PATH} element={<ShiftCreationForm />} />
+                    <Route path={paths.SHIFTS_LIST_PATH} element={<ShiftsList />} />
+
+                    <Route path={paths.DELIVERIES_CREATE_PATH} element={<DeliveryCreationForm />} />
+                    <Route path={paths.DELIVERIES_LIST_PATH} element={<DeliveriesList />} />
                 </Routes>
             </BrowserRouter>
         </div>

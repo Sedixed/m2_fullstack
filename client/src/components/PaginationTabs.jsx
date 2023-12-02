@@ -21,7 +21,7 @@ const PaginationTabs = ({ currentPage, hydraView, callback }) => {
                     onClick={() => callback(parseViewElement(hydraView['hydra:first']))}
                     disabled={
                         hydraView['hydra:first'] === undefined || 
-                        currentPage === parseViewElement(hydraView['hydra:first']).page
+                        currentPage == parseViewElement(hydraView['hydra:first']).page
                     }
                 >
                     <i className="icon angle double left"></i>
@@ -58,7 +58,7 @@ const PaginationTabs = ({ currentPage, hydraView, callback }) => {
                     onClick={() => callback(parseViewElement(hydraView['hydra:last']))}
                     disabled={
                         hydraView['hydra:last'] === undefined || 
-                        currentPage === parseViewElement(hydraView['hydra:last']).page
+                        currentPage == parseViewElement(hydraView['hydra:last']).page
                     }
                 >
                     <i className="icon angle double right"></i>

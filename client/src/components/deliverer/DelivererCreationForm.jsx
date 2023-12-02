@@ -8,7 +8,7 @@ import server from "../../apis/server";
 import '../../styles/CreationForm.css';
 import ErrorMessage from "../ErrorMessage";
 
-const CreationForm = () => {
+const DelivererCreationForm = () => {
     const [name, setName] = useState('');
     const [error, setError] = useState('');
     const [visibleHelp, setVisibleHelp] = useState(false);
@@ -28,7 +28,7 @@ const CreationForm = () => {
             );
             
             if (data.status === 201) {
-                navigate(paths.LIST_PATH, {
+                navigate(paths.DELIVERERS_LIST_PATH, {
                     state: {
                         created: true
                     }
@@ -48,7 +48,7 @@ const CreationForm = () => {
                 errorMessage={error} 
                 callback={() => setError('')}
             />
-            <div className="ui container creation-form">
+            <div className="ui container creation-form deliverer">
                 <h1 className="ui header centered">Nouveau livreur</h1>
                 <form onSubmit={onFormSubmit} className="ui form">
                     <div className="field">
@@ -87,4 +87,4 @@ const CreationForm = () => {
     );
 };
 
-export default CreationForm;
+export default DelivererCreationForm;

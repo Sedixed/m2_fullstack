@@ -21,6 +21,8 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 
+use Symfony\Component\Serializer\Annotation\Groups as SerialGroups;
+
 #[ORM\Entity(repositoryClass: DeliveryRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
@@ -34,25 +36,48 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
         new Post(),
         new Patch(),
         new Delete()
-    ]
+      ],
+      normalizationContext: ['groups' => ['delivery:read']],
+      denormalizationContext: ['groups' => ['delivery:write']],
 )]
 class Delivery
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[SerialGroups([
+      'delivery:read',
+      'delivery:write'
+    ])]
     private ?int $id = null;
 
     #[ORM\Column(length: 32, nullable: true)]
+    #[SerialGroups([
+      'delivery:read',
+      'delivery:write'
+    ])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[SerialGroups([
+      'delivery:read',
+      'delivery:write'
+    ])]
     private ?string $pickUpAdress = null;
 
     #[ORM\Column(length: 255)]
+    #[SerialGroups([
+      'delivery:read',
+      'delivery:write'
+    ])]
     private ?string $dropOffAdress = null;
 
     #[ORM\ManyToOne(inversedBy: 'deliveries')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[SerialGroups([
+      'delivery:read',
+      'delivery:write'
+    ])]
     private ?Shift $shift = null;
 
     public function getId(): ?int

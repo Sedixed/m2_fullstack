@@ -1,28 +1,46 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import routes from "../../constants/routes";
 import server from "../../apis/server";
 import ErrorMessage from "../ErrorMessage";
 import '../../styles/EditionModal.css';
+import Loader from "../Loader";
 
-const EditionModal = ({ 
-    deliverer, 
+const DeliveryEditionModal = ({ 
+    delivery, 
     modalRef,
     closeModal,
     refetchCallback,
     location
 }) => {
-    const [name, setName] = useState(deliverer.name);
+    const [pickUpAddress, setPickUpAddress] = useState(delivery.pickUpAdress);
+    const [dropOffAddress, setDropOffAddress] = useState(delivery.dropOffAdress);
+    const [shiftId, setShiftId] = useState(delivery.shift ? delivery.shift.id : null);
     const [error, setError] = useState('');
-    const [visibleHelp, setVisibleHelp] = useState(false);
-    const availableRef = useRef();
+    const [shifts, setShifts] = useState(null);
+
+    useEffect(() => {
+      const fetch = async () => {
+          const { data } = await server.get(
+              routes.SHIFTS, 
+              {
+                  params: {
+                    pagination: false
+                  }
+              }
+          );  
+          setShifts(data['hydra:member']);
+      }
+      fetch();
+  }, []);
 
     const save = async () => {
         const data = await server.patch(
-            routes.DELIVERERS + '/' + deliverer.id,
+            routes.DELIVERIES + '/' + delivery.id,
             {
-                name: name,
-                available: availableRef.current.checked
+                pickUpAdress: pickUpAddress,
+                dropOffAdress: dropOffAddress,
+                shift: shiftId ? `/api/shifts/${shiftId}` : null
             },
             {
                 headers: {
@@ -42,6 +60,18 @@ const EditionModal = ({
         }
     }
 
+    if (!shifts) {
+      return (
+        <div className="ui dimmer active edition-modal-dimmer">
+          <Loader />
+        </div>
+      )
+    }
+
+    const renderedShifts = shifts.map(
+      shift => <option key={shift.id} value={shift.id}>{shift.name}</option>
+    )
+
     return (
         <div className="ui dimmer active edition-modal-dimmer">
             <div ref={modalRef} className="ui modal active edition-modal">
@@ -50,7 +80,7 @@ const EditionModal = ({
                     onClick={closeModal}
                 ></i>
                 <div className="edition-modal-header header">
-                    {deliverer.name}
+                    Livraison
                 </div>
                 <div className="content">
                     <ErrorMessage 
@@ -60,31 +90,35 @@ const EditionModal = ({
                     />
                     <form onSubmit={null} className="ui form">
                         <div className="field">
-                            <label>Nom complet</label>
+                            <label>Adresse de ramassage</label>
                             <input 
                                 type="text" 
-                                value={name} 
-                                onChange={e => setName(e.target.value)}
-                                onMouseEnter={_ => setVisibleHelp(true)}
-                                onMouseLeave={_ => setVisibleHelp(false)}
-                                maxLength="32"
-                                minLength="3"
-                                placeholder={deliverer.name}
+                                value={pickUpAddress} 
+                                onChange={e => setPickUpAddress(e.target.value)}
                                 required
                             />
-                            <div className={`ui teal left pointing label visible-help-label ${visibleHelp ? '' : 'hidden'}`}>
-                                3 - 32 caractères
-                            </div>
                         </div>
+                        
                         <div className="field">
-                            <div className="ui checkbox">
+                            <label>Adresse de dépôt</label>
                             <input 
-                                type="checkbox" 
-                                ref={availableRef}
-                                defaultChecked={deliverer.available}
+                                type="text" 
+                                value={dropOffAddress} 
+                                onChange={e => setDropOffAddress(e.target.value)}
+                                required
                             />
-                            <label>Disponible</label>
-                            </div>
+                        </div>
+
+                        <div className="field">
+                            <label>Tournée</label>
+                            <select 
+                                className="ui fluid dropdown"
+                                onChange={e => setShiftId(e.target.value)}
+                                defaultValue={shiftId}
+                            >   
+                                <option value="">Aucune</option>
+                                {renderedShifts}
+                            </select>
                         </div>
                     </form>
                 </div>
@@ -108,4 +142,4 @@ const EditionModal = ({
     );
 };
 
-export default EditionModal;
+export default DeliveryEditionModal;

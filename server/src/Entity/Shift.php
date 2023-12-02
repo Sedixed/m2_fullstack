@@ -48,7 +48,8 @@ class Shift
     #[SerialGroups([
       'shift:read',
       'shift:write',
-      'deliverer:read'
+      'deliverer:read',
+      'delivery:read',
     ])]
     private ?int $id = null;
 
@@ -56,7 +57,8 @@ class Shift
     #[SerialGroups([
       'shift:read',
       'shift:write',
-      'deliverer:read'
+      'deliverer:read',
+      'delivery:read',
     ])]
     private ?string $name = null;
 
@@ -64,7 +66,8 @@ class Shift
     #[SerialGroups([
       'shift:read',
       'shift:write',
-      'deliverer:read'
+      'deliverer:read',
+      'delivery:read',
     ])]
     private ?\DateTimeImmutable $startingDate = null;
 
@@ -72,7 +75,8 @@ class Shift
     #[SerialGroups([
       'shift:read',
       'shift:write',
-      'deliverer:read'
+      'deliverer:read',
+      'delivery:read',
     ])]
     private ?\DateTimeImmutable $endingDate = null;
 
@@ -80,11 +84,19 @@ class Shift
     #[SerialGroups([
       'shift:read',
       'shift:write',
-      'deliverer:read'
+      'deliverer:read',
+      'delivery:read',
     ])]
     private Collection $deliveries;
 
     #[ORM\ManyToOne(inversedBy: 'shifts')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[SerialGroups([
+      'shift:read',
+      'shift:write',
+      'deliverer:read',
+      'delivery:read',
+    ])]
     private ?Deliverer $deliverer = null;
 
     public function __construct()

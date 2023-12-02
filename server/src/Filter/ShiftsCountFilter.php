@@ -28,7 +28,7 @@ final class ShiftsCountFilter extends AbstractFilter
         return;
     }
 
-        if ($property !== 'order' || !array_key_exists('shifts', $value)) {
+        if ('order' !== $property || !array_key_exists('shifts', $value)) {
             return;
         }
 

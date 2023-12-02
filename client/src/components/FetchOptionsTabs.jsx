@@ -89,7 +89,7 @@ const FetchOptionsTabs = ({
             </div>
         )
     }
-
+    
     return (
         <div className="fetch-options-tabs">
             <p className="label">Trier par</p>
@@ -107,8 +107,8 @@ const FetchOptionsTabs = ({
                     Date de création
                 </button>
                 <button 
-                    className={`ui medium button ${sortProperty === 'creationDate' ? 'darken' : ''}`}
-                    onClick={() => setSortProperty('creationDate')}
+                    className={`ui medium button ${sortProperty === 'shiftsCount' ? 'darken' : ''}`}
+                    onClick={() => setSortProperty('shiftsCount')}
                 >
                     Nombre de tournées
                 </button>

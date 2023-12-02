@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import server from "../../apis/server";
-import routes from "../../constants/routes";
-import DelivererTable from "./DelivererTable";
+import server from "../../apis/server.jsx";
+import routes from "../../constants/routes.jsx";
+import DelivererTable from "./DelivererTable.jsx";
 import Loader from "../Loader.jsx";
-import PaginationTabs from "../PaginationTabs";
-import EditionModal from "./EditionModal";
-import SuccessMessage from '../SuccessMessage';
+import PaginationTabs from "../PaginationTabs.jsx";
+import DelivererEditionModal from "./DelivererEditionModal.jsx";
+import SuccessMessage from '../SuccessMessage.jsx';
 import { useLocation, useNavigate } from "react-router-dom";
-import paths from "../../constants/paths";
-import FetchOptionsTabs from "../FetchOptionsTabs";
+import paths from "../../constants/paths.jsx";
+import FetchOptionsTabs from "../FetchOptionsTabs.jsx";
 
-const HomePage = () => {
+const DeliverersList = () => {
     const [deliverers, setDeliverers] = useState(null);
     const [hydraView, setHydraView] = useState(null);
     const [delivererToEdit, setDelivererToEdit] = useState(null);
@@ -104,10 +104,10 @@ const HomePage = () => {
     return (
         !deliverers ?
         <Loader /> :
-        <React.Fragment>
+        <>
             {
                 delivererToEdit ?
-                <EditionModal 
+                <DelivererEditionModal 
                     modalRef={modalRef} 
                     deliverer={delivererToEdit}
                     closeModal={closeModal}
@@ -135,8 +135,8 @@ const HomePage = () => {
                 hydraView={hydraView} 
                 callback={setFetchingParams}
             />
-        </React.Fragment>
+        </>
     );
 };
 
-export default HomePage;
+export default DeliverersList;

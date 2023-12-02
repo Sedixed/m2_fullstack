@@ -10,7 +10,6 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use App\Repository\DelivererRepository;
-use App\Filter\ShiftsCountFilter;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -40,7 +39,6 @@ use Symfony\Component\Serializer\Annotation\Groups as SerialGroups;
     normalizationContext: ['groups' => ['deliverer:read']],
     denormalizationContext: ['groups' => ['deliverer:write']],
 )]
-#[ApiFilter(ShiftsCountFilter::class)]
 class Deliverer
 {
     #[ORM\Id]
@@ -48,7 +46,8 @@ class Deliverer
     #[ORM\Column]
     #[SerialGroups([
       'deliverer:read',
-      'deliverer:write'
+      'deliverer:write',
+      'shift:read'
     ])]
     private ?int $id = null;
 
@@ -56,7 +55,8 @@ class Deliverer
     #[ApiFilter(OrderFilter::class)]
     #[SerialGroups([
       'deliverer:read',
-      'deliverer:write'
+      'deliverer:write',
+      'shift:read'
     ])]
     private ?string $name = null;
 
@@ -64,7 +64,8 @@ class Deliverer
     #[ApiFilter(BooleanFilter::class)]
     #[SerialGroups([
       'deliverer:read',
-      'deliverer:write'
+      'deliverer:write',
+      'shift:read'
     ])]
     private ?bool $available = null;
 
@@ -74,7 +75,8 @@ class Deliverer
     #[ApiProperty(writable: false)]
     #[SerialGroups([
       'deliverer:read',
-      'deliverer:write'
+      'deliverer:write',
+      'shift:read'
     ])]
     private ?\DateTimeInterface $creationDate = null;
     
@@ -85,10 +87,20 @@ class Deliverer
     ])]
     private Collection $shifts;
     
+    #[ORM\Column]
+    #[ApiProperty(writable: false)]
+    #[ApiFilter(OrderFilter::class)]
+    #[SerialGroups([
+      'deliverer:read',
+      'shift:read'
+    ])]
+    private int $shiftsCount = 0;
+    
     public function __construct()
     {   
         $this->creationDate = new DateTime();
         $this->shifts = new ArrayCollection();
+        $this->shiftsCount = count($this->shifts->toArray());
     }
 
     public function getId(): ?int
@@ -140,13 +152,19 @@ class Deliverer
         return $this->shifts;
     }
 
+    public function getShiftsCount(): int
+    {
+      $this->shiftsCount = count($this->shifts->toArray());
+      return $this->shiftsCount;
+    }
+
     public function addShift(Shift $shift): static
     {
         if (!$this->shifts->contains($shift)) {
             $this->shifts->add($shift);
             $shift->setDeliverer($this);
+            $this->shiftsCount += 1;
         }
-
         return $this;
     }
 
@@ -157,6 +175,7 @@ class Deliverer
             if ($shift->getDeliverer() === $this) {
                 $shift->setDeliverer(null);
             }
+            $this->shiftsCount -= 1;
         }
 
         return $this;
