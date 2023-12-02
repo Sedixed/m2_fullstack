@@ -7,7 +7,6 @@ const ShiftTable = ({
     editionCallback,
     deletionCallback
 }) => {
-  console.log(shifts);
     const renderedShifts = shifts.map(s => {
         return (
             <tr key={s.id}>

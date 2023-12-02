@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import '../styles/Header.css';
 import paths from "../constants/paths";
 
 const Header = () => {
-    const [currentTab, setCurrentTab] = useState('deliverers');
+    const [currentTab, setCurrentTab] = useState(paths.DELIVERERS);
     const navigate = useNavigate();
 
     const updateTab = (path) => {
         setCurrentTab(path);
         navigate(path);
     }
+
+    useEffect(() => {
+        setCurrentTab(window.location.pathname)
+    }, []);
 
     return (
         <div className="ui secondary pointing menu c-header">

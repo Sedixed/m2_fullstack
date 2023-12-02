@@ -38,6 +38,35 @@ const ShiftCreationForm = () => {
         e.preventDefault();
         // Call API
         const create = async () => {
+            let startingTime = new Date(startingDate).getTime();
+            let endingTime = new Date(endingDate).getTime();
+            let mustCancel = false;
+            if (delivererId) {
+                let deliverer = deliverers.find(d => d.id == delivererId)
+                deliverer.shifts.every(shift => {
+                    let shiftStartingTime = new Date(shift.startingDate).getTime();
+                    let shiftEndingTime = new Date(shift.endingDate).getTime();
+                    if ((startingTime > shiftStartingTime && 
+                        startingTime < shiftEndingTime) ||
+                        (endingTime > shiftStartingTime && 
+                        endingTime < shiftEndingTime)
+                    ) { 
+                        setError(`Ce livreur a déjà une tournée de prévue du ${new Date(shift.startingDate).toLocaleDateString()} au ${new Date(shift.endingDate).toLocaleDateString()} !`);
+                        mustCancel = true;
+                        return;
+                    }
+                });
+            }
+
+            if (mustCancel) {
+              return;
+            }
+
+            if (startingTime > endingTime) {
+              setError('La date de fin de la livraison doit être ultérieure à la date de début !');
+              return;
+            }
+
             const data = await server.post(
                 routes.SHIFTS,
                 {
