@@ -8,12 +8,14 @@ import SuccessMessage from '../SuccessMessage.jsx';
 import { useLocation, useNavigate } from "react-router-dom";
 import paths from "../../constants/paths.jsx";
 import ShiftTable from "./ShiftTable.jsx";
+import ShiftFetchOptionsTabs from "./ShiftFetchOptionsTabs.jsx";
 
 const ShiftsList = () => {
     const [shifts, setShifts] = useState(null);
     const [hydraView, setHydraView] = useState(null);
     const [shiftToEdit, setShiftToEdit] = useState(null);
     const [snackMessage, setSnackMessage] = useState(null);
+    const [filterOptions, setFilterOptions] = useState(null);
     const [fetchingParams, setFetchingParams] = useState({
         pagination: true,
         page: 1,
@@ -24,11 +26,25 @@ const ShiftsList = () => {
     const navigate = useNavigate();
     
     const fetch = async () => {
+        let params =  {...fetchingParams};
+        if (filterOptions !== null) {
+            if (filterOptions['deliverer'] !== undefined) {
+                params['deliverer.id'] = filterOptions['deliverer']
+            }
+            if (filterOptions['startingDate'] !== undefined) {
+                params['startingDate'] = filterOptions['startingDate']
+            }
+            if (filterOptions['endingDate'] !== undefined) {
+                params['endingDate'] = filterOptions['endingDate']
+            }
+        }
+
         const { data } = await server.get(
             routes.SHIFTS, 
             {
-                params: fetchingParams
-            });  
+                params: params
+            }
+        );  
         setShifts(data['hydra:member']);
         setHydraView(data['hydra:view']);
     }
@@ -80,7 +96,7 @@ const ShiftsList = () => {
 
     useEffect(() => {
         fetch();
-    }, [fetchingParams]);
+    }, [fetchingParams, filterOptions]);
 
     return (
         !shifts ?
@@ -102,6 +118,8 @@ const ShiftsList = () => {
                 <SuccessMessage message={snackMessage} callback={() => setSnackMessage(null)} /> :
                 null
             }
+
+            <ShiftFetchOptionsTabs setFilterOptionsCallback={setFilterOptions}/>
 
             <ShiftTable 
                 shifts={shifts} 

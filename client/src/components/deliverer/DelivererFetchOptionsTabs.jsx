@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-import '../styles/FetchOptionsTabs.css';
+import '../../styles/DelivererFetchOptionsTabs.css';
 
-const FetchOptionsTabs = ({
+const DelivererFetchOptionsTabs = ({
     setSortOptionsCallback,
     setFilterOptionsCallback
 }) => {
@@ -160,4 +160,4 @@ const FetchOptionsTabs = ({
     );
 }
 
-export default FetchOptionsTabs;
+export default DelivererFetchOptionsTabs;

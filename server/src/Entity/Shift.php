@@ -7,19 +7,13 @@ use App\Repository\ShiftRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
-use App\Repository\DelivererRepository;
-use DateTime;
-use Doctrine\DBAL\Types\Types;
 use ApiPlatform\Metadata\ApiFilter;
-use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
-use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
-use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 use Symfony\Component\Serializer\Annotation\Groups as SerialGroups;
 
@@ -40,6 +34,7 @@ use Symfony\Component\Serializer\Annotation\Groups as SerialGroups;
     normalizationContext: ['groups' => ['shift:read']],
     denormalizationContext: ['groups' => ['shift:write']],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['deliverer.id' => 'exact'])]
 class Shift
 {
     #[ORM\Id]
@@ -69,6 +64,7 @@ class Shift
       'deliverer:read',
       'delivery:read',
     ])]
+    #[ApiFilter(SearchFilter::class)]
     private ?\DateTimeImmutable $startingDate = null;
 
     #[ORM\Column]
@@ -78,6 +74,7 @@ class Shift
       'deliverer:read',
       'delivery:read',
     ])]
+    #[ApiFilter(SearchFilter::class)]
     private ?\DateTimeImmutable $endingDate = null;
 
     #[ORM\OneToMany(mappedBy: 'shift', targetEntity: Delivery::class)]

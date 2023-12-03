@@ -8,7 +8,7 @@ import DelivererEditionModal from "./DelivererEditionModal.jsx";
 import SuccessMessage from '../SuccessMessage.jsx';
 import { useLocation, useNavigate } from "react-router-dom";
 import paths from "../../constants/paths.jsx";
-import FetchOptionsTabs from "../FetchOptionsTabs.jsx";
+import DelivererFetchOptionsTabs from "./DelivererFetchOptionsTabs.jsx";
 
 const DeliverersList = () => {
     const [deliverers, setDeliverers] = useState(null);
@@ -47,7 +47,8 @@ const DeliverersList = () => {
             routes.DELIVERERS, 
             {
                 params: params
-            });  
+            }
+        );  
         setDeliverers(data['hydra:member']);
         setHydraView(data['hydra:view']);
     }
@@ -121,7 +122,7 @@ const DeliverersList = () => {
                 <SuccessMessage message={snackMessage} callback={() => setSnackMessage(null)} /> :
                 null
             }
-            <FetchOptionsTabs 
+            <DelivererFetchOptionsTabs 
                 setSortOptionsCallback={setSortOptions} 
                 setFilterOptionsCallback={setFilterOptions}
             />
