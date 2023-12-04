@@ -1,13 +1,13 @@
 :root {
-    --creation-bg-color: rgb(241, 241, 241);
+  --creation-bg-color: rgb(241, 241, 241);
 }
 
 .creation-form {
-    width: 30% !important;
-    background-color: var(--creation-bg-color);
-    padding: 70px 50px;
-    
-    border-radius: 30px;
+  width: 30% !important;
+  background-color: var(--creation-bg-color);
+  padding: 70px 50px;
+  
+  border-radius: 30px;
 }
 
 .creation-form.deliverer {
@@ -23,9 +23,9 @@
 }
 
 .creation-error-message {
-    width: 40%;
+  width: 40%;
 }
 
 .visible-help-label {
-    position: fixed !important;
+  position: fixed !important;
 }
