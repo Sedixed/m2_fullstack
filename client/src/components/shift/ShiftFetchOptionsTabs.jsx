@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import '../../styles/ShiftFetchOptionsTabs.css';
 import Loader from "../Loader";
 import server from "../../apis/server";
 import routes from "../../constants/routes";

@@ -33,14 +33,14 @@ const ShiftTable = ({
     <div className="ui container shift-table">
       <table className="ui celled table">
         <thead>
-            <tr>
-              <th className="center aligned">Nom</th>
-              <th className="center aligned">Date de début</th>
-              <th className="center aligned">Date de fin</th>
-              <th className="center aligned">Nombre de livraisons</th>
-              <th className="center aligned">Livreur</th>
-              <th className="center aligned">Actions</th>
-            </tr>
+          <tr>
+            <th className="center aligned">Nom</th>
+            <th className="center aligned">Date de début</th>
+            <th className="center aligned">Date de fin</th>
+            <th className="center aligned">Nombre de livraisons</th>
+            <th className="center aligned">Livreur</th>
+            <th className="center aligned">Actions</th>
+          </tr>
         </thead>
         <tbody>
           {renderedShifts}
