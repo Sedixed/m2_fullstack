@@ -1,0 +1,15 @@
+:root {
+  --header-bg-color: rgb(241, 241, 241);
+}
+
+.c-header {
+  background-color: var(--header-bg-color) !important;
+}
+
+.c-header .catch-icon {
+  color: red;
+}
+
+.c-header .right-spacing {
+  margin-right: 1vw;
+}

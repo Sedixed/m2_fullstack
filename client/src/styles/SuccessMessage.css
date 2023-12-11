@@ -1,0 +1,11 @@
+.success.message {
+  position: absolute;
+  right: 3px;
+  top: 45px;
+  margin: 0;
+  width: fit-content;
+}
+
+.success.message p {
+  margin-right: 15px;
+}

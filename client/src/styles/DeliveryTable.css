@@ -1,0 +1,33 @@
+.delivery-table {
+  margin-top: 5px;
+}
+
+.delivery-table .actions i {
+  height: auto;
+  width: auto;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: all ease 0.3s;
+  padding: 5px 8px;
+}
+
+.delivery-table .actions i.edit {
+  color: rgb(205, 151, 25);
+}
+
+.delivery-table .actions i.edit:hover {
+  color: rgb(254, 178, 0);
+}
+
+.delivery-table .actions i.delete {
+  color: #8b0000;
+}
+
+.delivery-table .actions i.delete:hover {
+  color: #bd0000;
+}
+
+.delivery-table .actions i:hover {
+  background-color: #aeaeae;
+  border-radius: 50%;
+}

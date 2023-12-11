@@ -1,0 +1,33 @@
+.shift-table {
+  margin-top: 5px;
+}
+
+.shift-table .actions i {
+  height: auto;
+  width: auto;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: all ease 0.3s;
+  padding: 5px 8px;
+}
+
+.shift-table .actions i.edit {
+  color: rgb(205, 151, 25);
+}
+
+.shift-table .actions i.edit:hover {
+  color: rgb(254, 178, 0);
+}
+
+.shift-table .actions i.delete {
+  color: #8b0000;
+}
+
+.shift-table .actions i.delete:hover {
+  color: #bd0000;
+}
+
+.shift-table .actions i:hover {
+  background-color: #aeaeae;
+  border-radius: 50%;
+}

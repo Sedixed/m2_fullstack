@@ -1,0 +1,35 @@
+.fetch-options-tabs {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.fetch-options-tabs .darken {
+  filter: brightness(0.90);
+}
+
+.fetch-options-tabs .filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.fetch-options-tabs .label {
+  margin-right: 20px;
+}
+
+.fetch-options-tabs .ml-20 {
+  margin-left: 20px;
+}
+
+.fetch-options-tabs .mr-50 {
+  margin-right: 50px;
+}
+
+.fetch-options-tabs .date-opts,
+.fetch-options-tabs .available-opts {
+  margin-top: 5px;
+}
+
+.fetch-options-tabs .available-opts {
+  width: 50%;
+}
